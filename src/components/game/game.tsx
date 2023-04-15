@@ -2,10 +2,10 @@ import { Component, For, onMount } from 'solid-js'
 import './game.sass'
 import { Card } from '../card/card'
 import { Header } from '../header/header'
-import { resetedArtists, stopGame } from '../../utils/stopGame'
-import { startGame } from '../../utils/startGame'
+import { onToggleMain, resetedArtists, stopCurrentSong } from '../../utils/gameManagement'
 import {
     artists,
+    isInGame,
     isPlaying,
     message,
     score,
@@ -33,22 +33,11 @@ export const Game: Component = () => {
                 setMessage('')
                 setHeaderColor('#BA1200')
             }
-            stopGame()
+            stopCurrentSong()
         }
     }
     const checkSongValidity = (choice: string, solution: string) => {
         return choice === solution
-    }
-
-    const onToggleMain = (): void => {
-        if (!isPlaying()) {
-            startGame()
-            return
-        }
-        if (isPlaying()) {
-            stopGame()
-            return
-        }
     }
 
     return (
@@ -58,6 +47,7 @@ export const Game: Component = () => {
                 onToggleMain={onToggleMain}
                 score={score()}
                 isPlaying={isPlaying()}
+                isInGame={isInGame()}
                 message={message()}
             />
             <hr />
