@@ -1,6 +1,6 @@
 import { Component } from 'solid-js'
 import './card.sass'
-import { Artist } from '../models/artist'
+import { Artist } from '../../models/artist'
 
 interface CardProps {
     artist: Artist
