@@ -9,7 +9,7 @@ interface CardProps {
 
 export const Card: Component<CardProps> = ({ artist, onClick }) => {
     return (
-        <div class="card" onClick={onClick}>
+        <div class="card" onclick={onClick}>
             <h3>{artist.name}</h3>
         </div>
     )
