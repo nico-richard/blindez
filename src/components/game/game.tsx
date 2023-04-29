@@ -2,7 +2,7 @@ import { Component, For, onMount } from 'solid-js'
 import './game.sass'
 import { Card } from '../card/card'
 import { Header } from '../header/header'
-import { onToggleMain, resetedArtists, stopCurrentSong } from '../../utils/gameManagement'
+import { onToggleMain, resetedArtists } from '../../utils/gameManagement'
 import {
     artists,
     isInGame,
@@ -16,6 +16,7 @@ import {
     setScore,
 } from '../../utils/signals'
 import { onReset } from '../../utils/resetGame'
+import { audio } from '../../utils/audio'
 
 export const Game: Component = () => {
     onMount(() => {
@@ -33,7 +34,7 @@ export const Game: Component = () => {
                 setMessage('')
                 setHeaderColor('#BA1200')
             }
-            stopCurrentSong()
+            // stopCurrentSong()
         }
     }
     const checkSongValidity = (choice: string, solution: string) => {

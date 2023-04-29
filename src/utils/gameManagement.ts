@@ -1,7 +1,7 @@
 import { songs } from '../data/songs'
 import { Artist } from '../models/artist'
 import { Song } from '../models/song'
-import { playSong, stopSong } from './audio'
+import { audio, playSong, stopSong } from './audio'
 import {
     artists,
     isInGame,
@@ -20,6 +20,7 @@ export const onToggleMain = () => {
     if (!isInGame()) {
         // Set artist list
         setArtists(setRandomArtists())
+        console.debug('--- MAIN BUTTON --- Artist list set to : ', artists())
         setMessage('Song list created')
         setIsInGame(true)
         setStartButtonText('Play song')
@@ -27,25 +28,31 @@ export const onToggleMain = () => {
     } else {
         // Start first song
         if (!isPlaying()) {
-            // Set random song from previous list
-            setSelectedSong(selectRandomSong(artists()))
+            // Set random song from current list
+            let selectedSong = selectRandomSong(artists())
+            setSelectedSong(selectedSong)
+            console.debug('--- MAIN BUTTON --- Select random song from current list')
             setIsPlaying(true)
             setMessage('Song is playing')
             setStartButtonText('🔊 Current song playing 🔊')
             playSong()
             return
         } else {
-            stopCurrentSong()
+            stopSong()
             setIsPlaying(false)
+            setStartButtonText('Play song')
+            setSelectedSong(undefined)
             setMessage('Song stopped, waiting for next one')
+            setTimeout(() => setHeaderColor('#324266'), 1000)
             return
         }
     }
 }
 
 const selectRandomSong = (list: Artist[]): Song => {
-    const randomArtist = list[Math.floor(Math.random() * songs.length)]
-    return songs.filter((song) => song.artist === randomArtist)[0]
+    const randomId = Math.floor(Math.random() * list.length)
+    const randomArtist = list[randomId]
+    return songs.filter((song) => song.artist.name === randomArtist.name)[0]
 }
 
 const setRandomArtists = (): Artist[] => {
@@ -68,15 +75,6 @@ const setRandomArtists = (): Artist[] => {
     // Shuffle
     const shuffledArtists = rawArtists.sort((a, b) => 0.5 - Math.random())
     return shuffledArtists
-}
-
-export const stopCurrentSong = () => {
-    stopSong()
-    // setArtists(resetedArtists())
-    setIsPlaying(false)
-    setStartButtonText('Play song')
-    setSelectedSong(undefined)
-    setTimeout(() => setHeaderColor('#324266'), 1000)
 }
 
 export const resetedArtists = (): Artist[] => {
